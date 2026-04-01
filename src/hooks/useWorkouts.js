@@ -53,6 +53,14 @@ export function useWorkouts() {
     await deleteDoc(doc(db, 'workouts', id));
   };
 
+  const updateWorkout = async (id, updatedData) => {
+    if(!isFirebaseEnabled) {
+      setWorkouts(w => w.map(x => x.id === id ? { ...x, ...updatedData } : x));
+      return;
+    }
+    await updateDoc(doc(db, 'workouts', id), updatedData);
+  };
+
   const incrementTask = async () => {
     const newCount = todayRecord.completedTasks + 1;
     setTodayRecord({ ...todayRecord, completedTasks: newCount });
@@ -62,5 +70,5 @@ export function useWorkouts() {
     }
   };
 
-  return { workouts, addWorkout, deleteWorkout, todayRecord, incrementTask, isFirebaseEnabled };
+  return { workouts, addWorkout, deleteWorkout, updateWorkout, todayRecord, incrementTask, isFirebaseEnabled };
 }
