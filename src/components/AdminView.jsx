@@ -8,6 +8,7 @@ export default function AdminView({ onBack }) {
   const [newWorkout, setNewWorkout] = useState({
     name: '',
     description: '',
+    videoUrl: '',
     duration: 60,
     type: 'cardio'
   });
@@ -15,7 +16,7 @@ export default function AdminView({ onBack }) {
   const handleAdd = async () => {
     if (!newWorkout.name) return;
     await addWorkout({ ...newWorkout });
-    setNewWorkout({ name: '', description: '', duration: 60, type: 'cardio' });
+    setNewWorkout({ name: '', description: '', videoUrl: '', duration: 60, type: 'cardio' });
   };
 
   const handleDelete = async (id) => {
@@ -51,6 +52,12 @@ export default function AdminView({ onBack }) {
             placeholder="步驟說明 (簡單易懂為主)"
             value={newWorkout.description}
             onChange={(e) => setNewWorkout({...newWorkout, description: e.target.value})}
+          />
+          <input 
+            style={{ padding: '1rem', fontSize: '1.1rem', borderRadius: '8px', border: '1px solid #ccc' }} 
+            placeholder="YouTube 影片網址 (選填)" 
+            value={newWorkout.videoUrl}
+            onChange={(e) => setNewWorkout({...newWorkout, videoUrl: e.target.value})}
           />
           <div style={{ display: 'flex', gap: '1rem' }}>
             <select 

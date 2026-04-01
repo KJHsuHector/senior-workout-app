@@ -27,6 +27,14 @@ export default function WorkoutView({ workout, onComplete, onBack }) {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
+  const getYouTubeId = (url) => {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+  const videoId = getYouTubeId(workout.videoUrl);
+
   return (
     <div className="glass-card" style={{ textAlign: 'center' }}>
       <button className="btn-secondary" style={{ alignSelf: 'flex-start', border: 'none', background: 'transparent', boxShadow: 'none', padding: 0 }} onClick={onBack}>
@@ -34,6 +42,20 @@ export default function WorkoutView({ workout, onComplete, onBack }) {
       </button>
 
       <h2 style={{ fontSize: '2.5rem', color: 'var(--primary-dark)', margin: '1rem 0' }}>{workout.name}</h2>
+      
+      {videoId && (
+        <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: '16px', marginBottom: '1.5rem', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+          <iframe 
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`}
+            title="YouTube video player" 
+            frameBorder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
+
       <p style={{ fontSize: '1.5rem', color: 'var(--text-main)', marginBottom: '2rem' }}>
         {workout.description}
       </p>
